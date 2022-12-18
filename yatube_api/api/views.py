@@ -18,7 +18,7 @@ class PostViewSet(viewsets.ModelViewSet):
         """Запрещает редактировать не автору"""
         if serializer.instance.author != self.request.user:
             raise PermissionDenied('Изменение не своего контента недопустимо')
-        return super(PostViewSet, self).perform_update(serializer)
+        return super().perform_update(serializer)
 
     def perform_destroy(self, instance):
         """Запрещает удалять не автору"""
@@ -41,7 +41,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         return post.comments
 
     def perform_create(self, serializer):
-        '''Сохраняет автора коммента'''
+        """Сохраняет автора коммента"""
         post = get_object_or_404(Post, pk=self.kwargs.get('post_id'))
         serializer.save(author=self.request.user, post=post)
 
@@ -49,7 +49,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         """Запрещает редактировать не автору"""
         if serializer.instance.author != self.request.user:
             raise PermissionDenied('Изменение чужого контента не допустимо')
-        super(CommentViewSet, self).perform_update(serializer)
+        super().perform_update(serializer)
 
     def perform_destroy(self, instance):
         if instance.author != self.request.user:
